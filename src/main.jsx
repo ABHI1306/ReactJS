@@ -9,8 +9,6 @@ import "./index.css";
     - Search
     - Login Items
    Body
-    - Collections
-    - FiltersBar
     - RestaurantContainer
         ~ RestaurantCard
    Footer
