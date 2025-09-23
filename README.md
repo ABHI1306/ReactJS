@@ -1,0 +1,13 @@
+- Header
+  - Logo
+  - Location
+  - Search
+  - Login Items
+- Body
+  - RestaurantContainer
+    - RestaurantCard
+- Footer
+  - About
+  - Links
+  - Address
+  - Contact

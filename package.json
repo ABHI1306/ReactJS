@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "This is Namaste React by Abhijit.",
   "scripts": {
-    "start": "parcel src/index.html",
-    "build": "parcel build src/index.html",
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
     "test": "jest"
   },
   "keywords": [],

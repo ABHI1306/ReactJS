@@ -1,4 +1,4 @@
-import Location from "./location";
+import Location from "./Location";
 import { Search } from "lucide-react";
 
 const AppHeader = () => {
