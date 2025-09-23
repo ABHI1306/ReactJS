@@ -1,33 +1,49 @@
-export default function RestaurantCard({
-  image,
-  name,
-  cuisine,
-  location,
-  rating,
-  price,
-  time,
-}) {
+import { RESTAURANT_IMG } from "./utils/Endpoints";
+export default function RestaurantCard({ info }) {
+  const {
+    name,
+    cuisines,
+    areaName,
+    avgRating,
+    costForTwo,
+    sla,
+    cloudinaryImageId,
+  } = info;
+
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition">
+    <div
+      className="bg-white rounded-2xl shadow-md overflow-hidden
+               hover:shadow-2xl hover:scale-105 hover:-translate-y-1
+               transition-all duration-300 ease-in-out cursor-pointer"
+    >
       {/* Image */}
-      <img src={image} alt={name} className="h-48 w-full object-cover" />
+      <div className="relative">
+        <img
+          src={RESTAURANT_IMG + cloudinaryImageId}
+          alt={name}
+          className="h-48 w-full object-cover transform hover:brightness-90 transition duration-300"
+        />
+
+        {/* Optional overlay on hover */}
+        <div className="absolute inset-0 bg-black/10 opacity-0 hover:opacity-100 transition duration-300"></div>
+      </div>
 
       {/* Content */}
       <div className="p-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
           <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-lg">
-            ⭐ {rating}
+            ⭐ {avgRating}
           </span>
         </div>
 
         <p className="text-sm text-gray-600">
-          {cuisine} • {location}
+          {cuisines.join(", ")} • <b>{areaName}</b>
         </p>
 
         <div className="flex items-center justify-between mt-3 text-sm text-gray-700">
-          <span>💰 {price} for two</span>
-          <span>🕛 {time} mins</span>
+          <span>💰 {costForTwo}</span>
+          <span>🕛 {sla.deliveryTime} mins</span>
         </div>
       </div>
     </div>

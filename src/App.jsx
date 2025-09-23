@@ -1,64 +1,36 @@
 import Footer from "./Footer";
-import { useState } from "react";
 import AppHeader from "./AppHeader";
 import RestaurantCard from "./RestaurantCard";
+import { useState, useEffect } from "react";
+import { API_RESTAURANTS } from "./utils/Endpoints";
 
 export default function App() {
-  const restaurants = [
-    {
-      image:
-        "https://b.zmtcdn.com/data/pictures/2/6508002/3ff38e7519a70bb09157e1b8aa522d4f_featured_v2.jpg?output-format=webp",
-      name: "Biryani House",
-      cuisine: "Biryani, North Indian",
-      location: "Baner, Pune",
-      rating: "4.3",
-      price: "₹600",
-      time: "35",
-      isVeg: "False",
-    },
-    {
-      image:
-        "https://b.zmtcdn.com/data/pictures/3/20821553/74461a58dfdefc4e04dba223f88a5349_featured_v2.jpg?output-format=webp",
-      name: "Pizza Palace",
-      cuisine: "Italian, Fast Food",
-      location: "Kothrud, Pune",
-      rating: "2.1",
-      price: "₹500",
-      time: "30",
-      isVeg: "True",
-    },
-    {
-      image:
-        "https://b.zmtcdn.com/data/pictures/5/19111915/90ea8c89cfedbfbcaf0dd9bdb46cbb45_featured_v2.jpg?output-format=webp",
-      name: "Masaledar",
-      cuisine: "Biryani, North Indian",
-      location: "Baner, Pune",
-      rating: "4.5",
-      price: "₹600",
-      time: "35",
-      isVeg: "False",
-    },
-    {
-      image:
-        "https://b.zmtcdn.com/data/pictures/9/21771689/8014450dff30a03161be9d0ee61a2c3c_featured_v2.jpg?output-format=webp",
-      name: "Pizza Plater",
-      cuisine: "Italian, Fast Food",
-      location: "Camp, Pune",
-      rating: "3.1",
-      price: "₹500",
-      time: "38",
-      isVeg: "True",
-    },
-  ];
+  const [restaurants, setRestaurants] = useState([]);
 
   const filters = [
-    "Filter",
-    "Sort By",
+    "Budget Friendly",
+    "Premium Dining",
     "Fast Delivery",
     "Rating 4.5+",
     "Pure Veg",
     "Non Veg",
   ];
+
+  useEffect(() => {
+    getRestaurantData();
+  }, []);
+
+  const getRestaurantData = async () => {
+    const response = await fetch(API_RESTAURANTS);
+    const data = await response.json();
+
+    const resData =
+      data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants;
+
+    setRestaurants(resData);
+  };
+  console.log(restaurants[0]);
 
   // ✅ Store only one active filter
   const [activeFilter, setActiveFilter] = useState("");
@@ -78,13 +50,32 @@ export default function App() {
 
     switch (activeFilter) {
       case "Rating 4.5+":
-        return restaurants.filter((res) => Number(res.rating) >= 4.5);
+        return restaurants.filter((res) => Number(res.info.avgRating) >= 4.5);
+
       case "Pure Veg":
-        return restaurants.filter((res) => res.isVeg === "True");
+        return restaurants.filter((res) => res.info.veg === true);
+
       case "Non Veg":
-        return restaurants.filter((res) => res.isVeg === "False");
+        return restaurants.filter((res) => res.info.veg === false);
+
       case "Fast Delivery":
-        return restaurants.filter((res) => Number(res.time) <= 30);
+        return restaurants.filter(
+          (res) => Number(res.info.sla.deliveryTime) <= 30
+        );
+
+      case "Budget Friendly":
+        return restaurants.filter((res) => {
+          // costForTwo usually comes like "₹250 for two" → extract number
+          const cost = parseInt(res.info.costForTwo?.replace(/[^\d]/g, ""), 10);
+          return cost && cost <= 300;
+        });
+
+      case "Premium Dining":
+        return restaurants.filter((res) => {
+          const cost = parseInt(res.info.costForTwo?.replace(/[^\d]/g, ""), 10);
+          return cost && cost >= 800;
+        });
+
       default:
         return restaurants;
     }
