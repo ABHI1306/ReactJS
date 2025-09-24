@@ -2,6 +2,7 @@ import Footer from "./Footer";
 import AppHeader from "./AppHeader";
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
+import { ShimmerList } from "./utils/shimmerUI";
 import { API_RESTAURANTS } from "./utils/Endpoints";
 
 export default function App() {
@@ -30,7 +31,6 @@ export default function App() {
 
     setRestaurants(resData);
   };
-  console.log(restaurants[0]);
 
   // ✅ Store only one active filter
   const [activeFilter, setActiveFilter] = useState("");
@@ -96,11 +96,11 @@ export default function App() {
                 key={filter}
                 onClick={() => toggleFilter(filter)}
                 className={`px-4 py-2 rounded-full border text-sm font-medium whitespace-nowrap transition
-                  ${
-                    activeFilter === filter
-                      ? "bg-red-500 text-white border-red-500"
-                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-                  }`}
+                ${
+                  activeFilter === filter
+                    ? "bg-red-500 text-white border-red-500"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                }`}
               >
                 {filter}
               </button>
@@ -108,11 +108,15 @@ export default function App() {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {getFilteredRestaurants().map((res, index) => (
-              <RestaurantCard key={index} {...res} />
-            ))}
-          </div>
+          {restaurants.length === 0 ? (
+            <ShimmerList />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {getFilteredRestaurants().map((res, index) => (
+                <RestaurantCard key={index} {...res} />
+              ))}
+            </div>
+          )}
         </div>
       </main>
 
