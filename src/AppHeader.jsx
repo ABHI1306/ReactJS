@@ -1,6 +1,8 @@
 import Location from "./Location";
+
 import { useState } from "react";
 import { Search } from "lucide-react";
+import { Link } from "react-router-dom";
 import { LOGO } from "./utils/Endpoints";
 
 const AppHeader = ({ onSearch }) => {
@@ -20,7 +22,6 @@ const AppHeader = ({ onSearch }) => {
           <img src={LOGO} alt="logo" className="h-12" />
           <Location />
         </div>
-
         {/* Middle: Search bar */}
         <div className="flex-1 mx-8 relative">
           <input
@@ -36,18 +37,20 @@ const AppHeader = ({ onSearch }) => {
             className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 cursor-pointer"
           />
         </div>
-
         {/* Right: Links */}
         <div className="flex items-center gap-6">
-          <a href="#" className="text-gray-700 font-medium hover:text-gray-900">
+          <Link
+            to="/login"
+            className="text-gray-700 font-medium hover:text-gray-900"
+          >
             Log In
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/signup"
             className="text-gray-700 font-medium hover:text-gray-900 border px-3 py-1 rounded-md"
           >
             Sign Up
-          </a>
+          </Link>
         </div>
       </div>
     </div>

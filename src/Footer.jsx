@@ -1,5 +1,5 @@
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import { LOGO } from "./utils/Endpoints";
+import { Facebook, Instagram, Smile, Twitter, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (

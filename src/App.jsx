@@ -8,8 +8,8 @@ import { API_RESTAURANTS } from "./utils/Endpoints";
 
 export default function App() {
   const [restaurants, setRestaurants] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("");
 
   const filters = [
     "Budget Friendly",
