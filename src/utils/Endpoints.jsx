@@ -1,3 +1,6 @@
+export const LOGO =
+  "https://seeklogo.com/images/Z/zomato-logo-200607EC4C-seeklogo.com.png";
+
 export const RESTAURANT_IMG =
   "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/";
 

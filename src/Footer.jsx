@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import { LOGO } from "./utils/Endpoints";
 
 export default function Footer() {
   return (
@@ -8,11 +9,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-10">
           {/* Logo */}
           <div>
-            <img
-              src="https://seeklogo.com/images/Z/zomato-logo-200607EC4C-seeklogo.com.png"
-              alt="logo"
-              className="h-10"
-            />
+            <img src={LOGO} alt="logo" className="h-10" />
             <p className="mt-2 text-sm text-gray-500">
               Discover the best food & drinks in your city
             </p>

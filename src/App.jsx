@@ -1,12 +1,15 @@
 import Footer from "./Footer";
 import AppHeader from "./AppHeader";
 import RestaurantCard from "./RestaurantCard";
+
 import { useState, useEffect } from "react";
 import { ShimmerList } from "./utils/shimmerUI";
 import { API_RESTAURANTS } from "./utils/Endpoints";
 
 export default function App() {
   const [restaurants, setRestaurants] = useState([]);
+  const [activeFilter, setActiveFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filters = [
     "Budget Friendly",
@@ -32,59 +35,62 @@ export default function App() {
     setRestaurants(resData);
   };
 
-  // ✅ Store only one active filter
-  const [activeFilter, setActiveFilter] = useState("");
-
-  // ✅ Handle toggle
   const toggleFilter = (filter) => {
-    if (activeFilter === filter) {
-      setActiveFilter(""); // deselect
-    } else {
-      setActiveFilter(filter); // select new filter
-    }
+    setActiveFilter(activeFilter === filter ? "" : filter);
   };
 
-  // ✅ Filter restaurants based on single active filter
   const getFilteredRestaurants = () => {
-    if (!activeFilter) return restaurants; // no filter selected
+    let result = [...restaurants];
+
+    // ✅ Apply search first
+    if (searchQuery) {
+      result = result.filter(
+        (res) =>
+          res.info.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          res.info.cuisines
+            .join(", ")
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // ✅ Then apply active filter
+    if (!activeFilter) return result;
 
     switch (activeFilter) {
       case "Rating 4.5+":
-        return restaurants.filter((res) => Number(res.info.avgRating) >= 4.5);
+        return result.filter((res) => Number(res.info.avgRating) >= 4.5);
 
       case "Pure Veg":
-        return restaurants.filter((res) => res.info.veg === true);
+        return result.filter((res) => res.info.veg === true);
 
       case "Non Veg":
-        return restaurants.filter((res) => res.info.veg === false);
+        return result.filter((res) => res.info.veg === false);
 
       case "Fast Delivery":
-        return restaurants.filter(
-          (res) => Number(res.info.sla.deliveryTime) <= 30
-        );
+        return result.filter((res) => Number(res.info.sla.deliveryTime) <= 30);
 
       case "Budget Friendly":
-        return restaurants.filter((res) => {
-          // costForTwo usually comes like "₹250 for two" → extract number
+        return result.filter((res) => {
           const cost = parseInt(res.info.costForTwo?.replace(/[^\d]/g, ""), 10);
           return cost && cost <= 300;
         });
 
       case "Premium Dining":
-        return restaurants.filter((res) => {
+        return result.filter((res) => {
           const cost = parseInt(res.info.costForTwo?.replace(/[^\d]/g, ""), 10);
           return cost && cost >= 800;
         });
 
       default:
-        return restaurants;
+        return result;
     }
   };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <AppHeader />
+      <AppHeader onSearch={setSearchQuery} />
 
       {/* Main Content */}
       <main className="flex-1">

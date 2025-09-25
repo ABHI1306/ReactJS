@@ -1,19 +1,23 @@
 import Location from "./Location";
+import { useState } from "react";
 import { Search } from "lucide-react";
+import { LOGO } from "./utils/Endpoints";
 
-const AppHeader = () => {
+const AppHeader = ({ onSearch }) => {
+  const [query, setQuery] = useState("");
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSearch(query);
+    }
+  };
+
   return (
     <div className="bg-white shadow-md">
       <div className="flex items-center justify-between px-8 py-4 max-w-7xl mx-auto">
-        {/* Left: Logo */}
+        {/* Left: Logo + Location */}
         <div className="flex items-center gap-6">
-          <img
-            src="https://seeklogo.com/images/Z/zomato-logo-200607EC4C-seeklogo.com.png"
-            alt="logo"
-            className="h-12"
-          />
-
-          {/* Location */}
+          <img src={LOGO} alt="logo" className="h-12" />
           <Location />
         </div>
 
@@ -21,10 +25,16 @@ const AppHeader = () => {
         <div className="flex-1 mx-8 relative">
           <input
             type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Search for restaurant, cuisine or a dish"
             className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
           />
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
+          <Search
+            onClick={() => onSearch(query)}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 cursor-pointer"
+          />
         </div>
 
         {/* Right: Links */}
