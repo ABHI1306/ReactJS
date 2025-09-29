@@ -3,7 +3,7 @@ import AppHeader from "./AppHeader";
 import RestaurantCard from "./RestaurantCard";
 
 import { useState, useEffect } from "react";
-import { ShimmerList } from "./utils/shimmerUI";
+import { ShimmerList } from "./utils/ShimmerUI";
 import { API_RESTAURANTS } from "./utils/Endpoints";
 
 export default function App() {
